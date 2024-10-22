@@ -1,0 +1,26 @@
+# documentation: 'https://docs.arangodb.com'
+# type: arangodb
+# name: ArangoDB
+# port: 8529
+# logo: ./svgs/arangodb.svg
+# description: 'ArangoDB is a native multi-model database for documents, graphs, and key-values.'
+# labels:
+#   - database
+#  - graph
+
+services:
+  arangodb:
+    image: arangodb/arangodb
+    ports:
+      - '8529:8529'
+    environment:
+      - SERVICE_FQDN_ARANGODB
+      - 'ARANGO_ROOT_PASSWORD=${SERVICE_PASSWORD_ARANGODB}'
+    healthcheck:
+      test: "wget --header='accept: application/json' --no-verbose --tries=1 --output-document=/dev/null http://root:$SERVICE_PASSWORD_ARANGODB@127.0.0.1:8529/_api/version &> /dev/null || exit 1"
+      interval: 60s
+      timeout: 20s
+      retries: 2
+    volumes:
+      - ${COOLIFY_VOLUME_ARANGODB}-data:/var/lib/arangodb3
+      - ${COOLIFY_VOLUME_ARANGODB}-apps:/var/lib/arangodb3-apps
