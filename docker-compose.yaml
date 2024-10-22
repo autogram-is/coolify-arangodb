@@ -15,7 +15,7 @@ services:
       - '8529:8529'
     environment:
       - SERVICE_FQDN_ARANGODB
-      - 'ARANGO_ROOT_PASSWORD=${SERVICE_PASSWORD_ARANGODB}'
+      - ARANGO_ROOT_PASSWORD=${SERVICE_PASSWORD_ARANGODB}
     healthcheck:
       test: "wget --header='accept: application/json' --no-verbose --tries=1 --output-document=/dev/null http://root:$SERVICE_PASSWORD_ARANGODB@127.0.0.1:8529/_api/version &> /dev/null || exit 1"
       interval: 60s
